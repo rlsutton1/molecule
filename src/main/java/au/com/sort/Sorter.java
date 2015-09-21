@@ -1,8 +1,5 @@
 package au.com.sort;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -112,7 +109,6 @@ public class Sorter
 
 		for (int ran : randSource)
 		{
-			int nextInt = rand.nextInt(primary.size());
 			Molecule primaryMolecule = primary.get(ran);
 			Molecule bestMatch = null;
 			double bestMatchDistance = 1000000000;

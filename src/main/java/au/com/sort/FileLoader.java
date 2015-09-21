@@ -23,7 +23,6 @@ public class FileLoader
 
 		List<Molecule> openStripList = parseFile(excludeFileName, type, 3);
 
-		
 		primary = stripAtoms(primary, collapsedStripList);
 		secondary = stripAtoms(secondary, openStripList);
 
@@ -34,17 +33,16 @@ public class FileLoader
 		}
 
 	}
-	
+
 	public List<Molecule> getPrimary()
 	{
 		return primary;
 	}
-	
+
 	public List<Molecule> getSecondary()
 	{
 		return secondary;
 	}
-	
 
 	List<Molecule> stripAtoms(List<Molecule> target, List<Molecule> stripList)
 	{
@@ -78,38 +76,41 @@ public class FileLoader
 	{
 
 		List<Molecule> primary = new LinkedList<>();
-		BufferedReader reader = new BufferedReader(new FileReader(filename));
-
-		int block = 0;
-		String line = null;
-		while ((line = reader.readLine()) != null)
+		try (BufferedReader reader = new BufferedReader(
+				new FileReader(filename)))
 		{
-			boolean isNewBlock = true;
-			try
-			{
-				Integer.parseInt(line.trim());
-			} catch (Exception e)
-			{
-				isNewBlock = false;
-			}
-			if (isNewBlock)
-			{
-				block++;
-			}
-			if (block == requiredBlock)
-			{
 
-				Molecule molecule = parseLine(line);
-				if (molecule != null)
+			int block = 0;
+			String line = null;
+			while ((line = reader.readLine()) != null)
+			{
+				boolean isNewBlock = true;
+				try
 				{
-					if (atomFilter == null
-							|| molecule.type.equalsIgnoreCase(atomFilter))
+					Integer.parseInt(line.trim());
+				} catch (Exception e)
+				{
+					isNewBlock = false;
+				}
+				if (isNewBlock)
+				{
+					block++;
+				}
+				if (block == requiredBlock)
+				{
+
+					Molecule molecule = parseLine(line);
+					if (molecule != null)
 					{
-						primary.add(molecule);
+						if (atomFilter == null
+								|| molecule.type.equalsIgnoreCase(atomFilter))
+						{
+							primary.add(molecule);
+						}
+					} else
+					{
+						// System.out.println("bad");
 					}
-				} else
-				{
-					// System.out.println("bad");
 				}
 			}
 		}
