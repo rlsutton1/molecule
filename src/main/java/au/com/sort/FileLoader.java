@@ -19,17 +19,20 @@ public class FileLoader
 
 		secondary = parseFile(secondaryFileName, type, 1);
 
-		List<Molecule> collapsedStripList = parseFile(excludeFileName, type, 1);
 
-		List<Molecule> openStripList = parseFile(excludeFileName, type, 3);
-
-		primary = stripAtoms(primary, collapsedStripList);
-		secondary = stripAtoms(secondary, openStripList);
-
-		if (primary.size() != secondary.size())
+		if (excludeFileName != null)
 		{
-			throw new RuntimeException(
-					"stripping resulted in incorrect list sizes");
+			List<Molecule> collapsedStripList = parseFile(excludeFileName, type, 1);
+			List<Molecule> openStripList = parseFile(excludeFileName, type, 3);
+
+			primary = stripAtoms(primary, collapsedStripList);
+			secondary = stripAtoms(secondary, openStripList);
+
+			if (primary.size() != secondary.size())
+			{
+				throw new RuntimeException(
+						"stripping resulted in incorrect list sizes");
+			}
 		}
 
 	}
@@ -88,7 +91,8 @@ public class FileLoader
 				try
 				{
 					Integer.parseInt(line.trim());
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					isNewBlock = false;
 				}
@@ -103,11 +107,12 @@ public class FileLoader
 					if (molecule != null)
 					{
 						if (atomFilter == null
-								|| molecule.type.equalsIgnoreCase(atomFilter))
+								|| applyAtomFilter(atomFilter, molecule))
 						{
 							primary.add(molecule);
 						}
-					} else
+					}
+					else
 					{
 						// System.out.println("bad");
 					}
@@ -115,6 +120,22 @@ public class FileLoader
 			}
 		}
 		return primary;
+	}
+
+	private static boolean applyAtomFilter(String atomFilter, Molecule molecule)
+	{
+		String[] filters = atomFilter.split(",");
+		boolean matches = false;
+		for (String filter : filters)
+		{
+			if (molecule.type.equalsIgnoreCase(filter))
+			{
+				matches = true;
+				break;
+			}
+		}
+
+		return matches;
 	}
 
 	static Molecule parseLine(String line)
@@ -152,7 +173,8 @@ public class FileLoader
 						z = Double.parseDouble(part);
 					}
 					i++;
-				} catch (Exception e)
+				}
+				catch (Exception e)
 				{
 					return null;
 				}

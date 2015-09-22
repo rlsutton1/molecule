@@ -90,13 +90,18 @@ public class MoleculeSampleApp extends Application
 			IOException, InterruptedException
 	{
 		System.setProperty("prism.dirtyopts", "false");
+		String stripList = null;
+		if (args.length==4)
+		{
+			stripList = args[3];
+		}
 
-		FileLoader loader = new FileLoader(args[0], args[1], args[2], args[3]);
+		FileLoader loader = new FileLoader(args[0], args[1], args[2],stripList);
 
 		primary = loader.getPrimary();
 		secondary = loader.getSecondary();
 
-		secondary = RelationshipSorter.getSorted(primary, secondary);
+		//secondary = RelationshipSorter.getSorted(primary, secondary);
 		launch(args);
 	}
 
