@@ -13,6 +13,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.PerspectiveCamera;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
@@ -33,7 +34,7 @@ public class MoleculeSampleApp extends Application
 	final XForm cameraXForm = new XForm();
 	final XForm cameraXForm2 = new XForm();
 	final XForm cameraXForm3 = new XForm();
-	final double cameraDistance = 100;
+	final double cameraDistance = 400;
 
 	final XForm moleculeGroup = new XForm();
 
@@ -91,17 +92,17 @@ public class MoleculeSampleApp extends Application
 	{
 		System.setProperty("prism.dirtyopts", "false");
 		String stripList = null;
-		if (args.length==4)
+		if (args.length == 4)
 		{
 			stripList = args[3];
 		}
 
-		FileLoader loader = new FileLoader(args[0], args[1], args[2],stripList);
+		FileLoader loader = new FileLoader(args[0], args[1], args[2], stripList);
 
 		primary = loader.getPrimary();
 		secondary = loader.getSecondary();
 
-		//secondary = RelationshipSorter.getSorted(primary, secondary);
+		// secondary = RelationshipSorter.getSorted(primary, secondary);
 		launch(args);
 	}
 
@@ -113,6 +114,7 @@ public class MoleculeSampleApp extends Application
 		cameraXForm3.getChildren().add(camera);
 		cameraXForm3.setRotateZ(180.0);
 
+		camera.setFieldOfView(7);
 		camera.setNearClip(0.1);
 		camera.setFarClip(10000.0);
 		camera.setTranslateZ(-cameraDistance);
@@ -230,19 +232,13 @@ public class MoleculeSampleApp extends Application
 				{
 					if (lastSelected != null)
 					{
-						if (selected.get(primary.get(lastSelected)) != null)
+						PhongMaterial material = greyMaterial;
+						if (selected.get(primary.get(lastSelected)) == null)
 						{
-							primaryAtoms.get(lastSelected).setMaterial(
-									greyMaterial);
-							secondaryAtoms.get(lastSelected).setMaterial(
-									greyMaterial);
-						} else
-						{
-							primaryAtoms.get(lastSelected).setMaterial(
-									redMaterial);
-							secondaryAtoms.get(lastSelected).setMaterial(
-									redMaterial);
+							material = redMaterial;
 						}
+						primaryAtoms.get(lastSelected).setMaterial(material);
+						secondaryAtoms.get(lastSelected).setMaterial(material);
 					}
 
 					for (int i = 0; i < primary.size(); i++)
@@ -260,6 +256,15 @@ public class MoleculeSampleApp extends Application
 						}
 					}
 				}
+				
+				if (me.getButton()==MouseButton.SECONDARY)
+				{
+					if (lastSelected!=null)
+					{
+						// here we can do a relationship swap!!!
+					}
+				}
+				
 				if (me.getClickCount() == 2)
 				{
 					if (selected.get(primary.get(lastSelected)) == null)
@@ -271,8 +276,9 @@ public class MoleculeSampleApp extends Application
 								.setMaterial(greyMaterial);
 						secondaryAtoms.get(lastSelected).setMaterial(
 								greyMaterial);
-						
-					} else
+
+					}
+					else
 					{
 						{
 							selected.remove(primary.get(lastSelected));
@@ -281,7 +287,7 @@ public class MoleculeSampleApp extends Application
 									redMaterial);
 							secondaryAtoms.get(lastSelected).setMaterial(
 									redMaterial);
-							
+
 						}
 					}
 				}
@@ -326,12 +332,14 @@ public class MoleculeSampleApp extends Application
 							- mouseDeltaX * modifierFactor * modifier * 2.0); // +
 					cameraXForm.rx.setAngle(cameraXForm.rx.getAngle()
 							+ mouseDeltaY * modifierFactor * modifier * 2.0); // -
-				} else if (me.isSecondaryButtonDown())
+				}
+				else if (me.isSecondaryButtonDown())
 				{
 					double z = camera.getTranslateZ();
 					double newZ = z + mouseDeltaX * modifierFactor * modifier;
 					camera.setTranslateZ(newZ);
-				} else if (me.isMiddleButtonDown())
+				}
+				else if (me.isMiddleButtonDown())
 				{
 					cameraXForm2.t.setX(cameraXForm2.t.getX() + mouseDeltaX
 							* modifierFactor * modifier * 0.3); // -
