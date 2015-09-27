@@ -12,9 +12,9 @@ public class Sorter
 			InterruptedException
 	{
 		FileLoader loader = new FileLoader(args[0], args[1], args[2], args[3]);
-		List<Molecule> primary = loader.getPrimary();
+		List<Atom> primary = loader.getPrimary();
 
-		List<Molecule> secondary = loader.getSecondary();
+		List<Atom> secondary = loader.getSecondary();
 
 		Sorter sorter = new Sorter();
 
@@ -31,20 +31,20 @@ public class Sorter
 
 	}
 
-	List<Molecule> bestResult = null;
+	List<Atom> bestResult = null;
 
 	double bestDisturbance = 1000000000;
 
-	void start(List<Molecule> primary, List<Molecule> secondary)
+	void start(List<Atom> primary, List<Atom> secondary)
 			throws InterruptedException
 	{
 
 		double lastBest = bestDisturbance;
 		for (int i = 0; i < 10000000; i++)
 		{
-			List<Molecule> removable = new LinkedList<>();
+			List<Atom> removable = new LinkedList<>();
 			removable.addAll(secondary);
-			List<Molecule> primaryremovable2 = new LinkedList<>();
+			List<Atom> primaryremovable2 = new LinkedList<>();
 			primaryremovable2.addAll(primary);
 			attempt(primaryremovable2, removable);
 
@@ -56,14 +56,14 @@ public class Sorter
 				System.out.println();
 
 				System.out.println(primary.size());
-				for (Molecule molecule : primary)
+				for (Atom molecule : primary)
 				{
 					System.out.println(molecule);
 				}
 				if (bestResult != null)
 				{
 					System.out.println(bestResult.size());
-					for (Molecule molecule : bestResult)
+					for (Atom molecule : bestResult)
 					{
 						System.out.println(molecule);
 					}
@@ -86,11 +86,11 @@ public class Sorter
 
 	}
 
-	private void attempt(List<Molecule> primary, List<Molecule> secondary)
+	private void attempt(List<Atom> primary, List<Atom> secondary)
 	{
 
 		double totalDisturbance = 0;
-		Molecule[] tertiary = new Molecule[primary.size()];
+		Atom[] tertiary = new Atom[primary.size()];
 
 		Random rand = new Random();
 
@@ -109,10 +109,10 @@ public class Sorter
 
 		for (int ran : randSource)
 		{
-			Molecule primaryMolecule = primary.get(ran);
-			Molecule bestMatch = null;
+			Atom primaryMolecule = primary.get(ran);
+			Atom bestMatch = null;
 			double bestMatchDistance = 1000000000;
-			for (Molecule molecule : secondary)
+			for (Atom molecule : secondary)
 			{
 				if (primaryMolecule.type.equals(molecule.type))
 				{
@@ -152,8 +152,8 @@ public class Sorter
 		if (totalDisturbance < bestDisturbance || bestResult == null)
 		{
 			bestDisturbance = totalDisturbance;
-			List<Molecule> tmp = new LinkedList<>();
-			for (Molecule m : tertiary)
+			List<Atom> tmp = new LinkedList<>();
+			for (Atom m : tertiary)
 			{
 				tmp.add(m);
 			}

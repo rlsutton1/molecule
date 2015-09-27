@@ -33,8 +33,8 @@ import javafx.scene.layout.BorderPane;
 public class MoleculeSampleApp extends Application {
 
 	private static final int SEPARATION = 18;
-	private static List<Molecule> primary;
-	private static List<Molecule> secondary;
+	private static List<Atom> primary;
+	private static List<Atom> secondary;
 	
 	final XForm world = new XForm();
 
@@ -226,7 +226,7 @@ public class MoleculeSampleApp extends Application {
 
 		XForm moleculeXForm2 = new XForm();
 
-		for (Molecule m : primary) {
+		for (Atom m : primary) {
 			XForm atomXForm = new XForm();
 
 			Sphere atom = new Sphere(1.0);
@@ -240,7 +240,7 @@ public class MoleculeSampleApp extends Application {
 			moleculeXForm1.getChildren().add(atomXForm);
 		}
 
-		for (Molecule m : secondary) {
+		for (Atom m : secondary) {
 			XForm atomXForm = new XForm();
 
 			Sphere atom = new Sphere(1.0);
@@ -269,7 +269,7 @@ public class MoleculeSampleApp extends Application {
 	private double mouseOldY;
 	protected Integer lastSelected = null;
 
-	Map<Molecule, Molecule> selected = new LinkedHashMap<>();
+	Map<Atom, Atom> selected = new LinkedHashMap<>();
 
 	private void handleMouse(Scene scene, final Node root) {
 
@@ -286,7 +286,7 @@ public class MoleculeSampleApp extends Application {
 							// here we can do a relationship swap!!!
 
 							for (int i = 0; i < secondary.size(); i++) {
-								Molecule m = secondary.get(i);
+								Atom m = secondary.get(i);
 								if (Math.abs((m.position.getX()) - x) < 1
 										&& Math.abs(m.position.getY() - y) < 1
 										&& Math.abs(m.position.getZ() - z) < 1) {
@@ -299,8 +299,8 @@ public class MoleculeSampleApp extends Application {
 											whiteMaterial);
 
 									// swap the secondary atoms around
-									Molecule last = secondary.get(lastSelected);
-									Molecule other = secondary.get(i);
+									Atom last = secondary.get(lastSelected);
+									Atom other = secondary.get(i);
 									secondary.add(lastSelected, other);
 									secondary.remove(lastSelected + 1);
 									secondary.add(i, last);
@@ -350,7 +350,7 @@ public class MoleculeSampleApp extends Application {
 					}
 
 					for (int i = 0; i < primary.size(); i++) {
-						Molecule m = primary.get(i);
+						Atom m = primary.get(i);
 						if (Math.abs((m.position.getX()) - x) < 1
 								&& Math.abs(m.position.getY() - y) < 1
 								&& Math.abs(m.position.getZ() - z) < 1) {
@@ -389,7 +389,7 @@ public class MoleculeSampleApp extends Application {
 					}
 				}
 
-				for (Molecule t : selected.keySet()) {
+				for (Atom t : selected.keySet()) {
 					System.out.println(t + " " + selected.get(t));
 				}
 

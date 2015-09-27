@@ -14,19 +14,19 @@ public class RelationshipSorter
 		
 
 		FileLoader loader = new FileLoader(args[0], args[1], args[2], args[3]);
-		List<Molecule> primary = loader.getPrimary();
+		List<Atom> primary = loader.getPrimary();
 
-		List<Molecule> secondary = loader.getSecondary();
+		List<Atom> secondary = loader.getSecondary();
 
 		
 		getSorted( primary, secondary);
 	}
 
-	public static List<Molecule> getSorted(
-			List<Molecule> primary, List<Molecule> secondary)
+	public static List<Atom> getSorted(
+			List<Atom> primary, List<Atom> secondary)
 			throws InterruptedException
 	{
-		List<Molecule> results = new LinkedList<>();
+		List<Atom> results = new LinkedList<>();
 		double disturb = 0;
 		for (int i = 0; i < primary.size(); i++)
 		{
@@ -67,27 +67,27 @@ public class RelationshipSorter
 		System.out.println("Total disturbance " + disturb);
 
 		System.out.println(primary.size());
-		for (Molecule m : primary)
+		for (Atom m : primary)
 		{
 			System.out.println(m);
 		}
 
 		System.out.println(primary.size());
-		for (Molecule m : results)
+		for (Atom m : results)
 		{
 			System.out.println(m);
 		}
 		return results;
 	}
 
-	static List<Relationship> identify(List<Molecule> molecules)
+	static List<Relationship> identify(List<Atom> molecules)
 	{
 		List<Relationship> relationships = new LinkedList<>();
 
-		for (Molecule molecule : molecules)
+		for (Atom molecule : molecules)
 		{
 			Relationship r = new Relationship(molecule);
-			for (Molecule other : molecules)
+			for (Atom other : molecules)
 			{
 				if (other.position.distance(molecule.position) < 3.1)
 				{

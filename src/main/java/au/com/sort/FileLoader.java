@@ -9,8 +9,8 @@ import java.util.List;
 
 public class FileLoader
 {
-	private List<Molecule> primary;
-	private List<Molecule> secondary;
+	private List<Atom> primary;
+	private List<Atom> secondary;
 
 	FileLoader(String primaryFileName, String secondaryFileName, String type,
 			String excludeFileName) throws FileNotFoundException, IOException
@@ -22,8 +22,8 @@ public class FileLoader
 
 		if (excludeFileName != null)
 		{
-			List<Molecule> collapsedStripList = parseFile(excludeFileName, type, 1);
-			List<Molecule> openStripList = parseFile(excludeFileName, type, 3);
+			List<Atom> collapsedStripList = parseFile(excludeFileName, type, 1);
+			List<Atom> openStripList = parseFile(excludeFileName, type, 3);
 
 			primary = stripAtoms(primary, collapsedStripList);
 			secondary = stripAtoms(secondary, openStripList);
@@ -37,25 +37,25 @@ public class FileLoader
 
 	}
 
-	public List<Molecule> getPrimary()
+	public List<Atom> getPrimary()
 	{
 		return primary;
 	}
 
-	public List<Molecule> getSecondary()
+	public List<Atom> getSecondary()
 	{
 		return secondary;
 	}
 
-	List<Molecule> stripAtoms(List<Molecule> target, List<Molecule> stripList)
+	List<Atom> stripAtoms(List<Atom> target, List<Atom> stripList)
 	{
 		double tollerance = 0.0001;
-		List<Molecule> result = new LinkedList<Molecule>();
+		List<Atom> result = new LinkedList<Atom>();
 
-		for (Molecule t : target)
+		for (Atom t : target)
 		{
 			boolean matched = false;
-			for (Molecule s : stripList)
+			for (Atom s : stripList)
 			{
 				if (Math.abs(s.position.getX() - t.position.getX()) < tollerance
 						&& Math.abs(s.position.getY() - t.position.getY()) < tollerance
@@ -74,11 +74,11 @@ public class FileLoader
 		return result;
 	}
 
-	private static List<Molecule> parseFile(String filename, String atomFilter,
+	private static List<Atom> parseFile(String filename, String atomFilter,
 			int requiredBlock) throws FileNotFoundException, IOException
 	{
 
-		List<Molecule> primary = new LinkedList<>();
+		List<Atom> primary = new LinkedList<>();
 		try (BufferedReader reader = new BufferedReader(
 				new FileReader(filename)))
 		{
@@ -103,7 +103,7 @@ public class FileLoader
 				if (block == requiredBlock)
 				{
 
-					Molecule molecule = parseLine(line);
+					Atom molecule = parseLine(line);
 					if (molecule != null)
 					{
 						if (atomFilter == null
@@ -122,7 +122,7 @@ public class FileLoader
 		return primary;
 	}
 
-	private static boolean applyAtomFilter(String atomFilter, Molecule molecule)
+	private static boolean applyAtomFilter(String atomFilter, Atom molecule)
 	{
 		String[] filters = atomFilter.split(",");
 		boolean matches = false;
@@ -138,7 +138,7 @@ public class FileLoader
 		return matches;
 	}
 
-	static Molecule parseLine(String line)
+	static Atom parseLine(String line)
 	{
 
 		String temp = line.replace("\t", " ");
@@ -184,7 +184,7 @@ public class FileLoader
 		if (x != null && y != null && z != null)
 		{
 
-			return new Molecule(m, x, y, z);
+			return new Atom(m, x, y, z);
 		}
 		return null;
 	}

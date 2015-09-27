@@ -2,12 +2,12 @@ package au.com.sort;
 
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
-public class Molecule implements Comparable<Molecule>
+public class Atom implements Comparable<Atom>
 {
 	String type;
 	Vector3D position;
 
-	Molecule(String type, double x, double y, double z)
+	Atom(String type, double x, double y, double z)
 	{
 		this.type = type;
 		position = new Vector3D(x, y, z);
@@ -33,7 +33,7 @@ public class Molecule implements Comparable<Molecule>
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Molecule other = (Molecule) obj;
+		Atom other = (Atom) obj;
 		if (position == null)
 		{
 			if (other.position != null)
@@ -50,7 +50,7 @@ public class Molecule implements Comparable<Molecule>
 	}
 
 	@Override
-	public int compareTo(Molecule o)
+	public int compareTo(Atom o)
 	{
 		int c = o.type.compareTo(type);
 		if (c == 0)

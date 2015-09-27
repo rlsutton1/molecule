@@ -9,9 +9,9 @@ public class Relationship
 {
 	List<Vector3D> neighbours = new LinkedList<>();
 	Vector3D origin;
-	Molecule molecule;
+	Atom molecule;
 
-	public Relationship(Molecule molecule)
+	public Relationship(Atom molecule)
 	{
 		this.molecule = molecule;
 		origin = molecule.position;
@@ -49,7 +49,7 @@ public class Relationship
 
 	}
 
-	public void addNeighbour(Molecule other)
+	public void addNeighbour(Atom other)
 	{
 		neighbours.add(other.position);
 
