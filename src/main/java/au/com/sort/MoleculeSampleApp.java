@@ -153,11 +153,16 @@ public class MoleculeSampleApp extends Application {
 			IOException, InterruptedException {
 		System.setProperty("prism.dirtyopts", "false");
 		String stripList = null;
-		if (args.length == 4) {
+		if (args.length > 4) {
 			stripList = args[3];
 		}
+		String atomFilter = null;
+		if (args.length > 2)
+		{
+			atomFilter = args[2];
+		}
 
-		FileLoader loader = new FileLoader(args[0], args[1], args[2], stripList);
+		FileLoader loader = new FileLoader(args[0], args[1], atomFilter, stripList);
 
 		primary = loader.getPrimary();
 		secondary = loader.getSecondary();
@@ -177,8 +182,8 @@ public class MoleculeSampleApp extends Application {
 		camera.setNearClip(0.1);
 		camera.setFarClip(10000.0);
 		camera.setTranslateZ(-cameraDistance);
-		cameraXForm.ry.setAngle(-.0);
-		cameraXForm.rx.setAngle(0);
+		cameraXForm.ry.setAngle(180);
+		cameraXForm.rx.setAngle(180);
 	}
 
 	// private void buildAxes()
@@ -253,11 +258,11 @@ public class MoleculeSampleApp extends Application {
 			secondaryAtoms.add(atom);
 		}
 
-		moleculeGroupPrimary.setTranslateX(SEPARATION);
+		moleculeGroupPrimary.setTranslateX(-SEPARATION);
 		moleculeGroupPrimary.getChildren().add(moleculeXForm1);
 
 		moleculeGroupSecondary.getChildren().add(moleculeXForm2);
-		moleculeGroupSecondary.setTranslateX(-SEPARATION);
+		moleculeGroupSecondary.setTranslateX(SEPARATION);
 
 		world.getChildren().addAll(moleculeGroupPrimary);
 		world.getChildren().addAll(moleculeGroupSecondary);
@@ -401,8 +406,15 @@ public class MoleculeSampleApp extends Application {
 
 			@Override
 			public void handle(MouseEvent me) {
+				if (!me.isStillSincePress())
+				{
 				mouseOldX = mousePosX;
 				mouseOldY = mousePosY;
+				}else
+				{
+					mouseOldX = me.getSceneX();
+					mouseOldY = me.getSceneY();
+				}
 				mousePosX = me.getSceneX();
 				mousePosY = me.getSceneY();
 
