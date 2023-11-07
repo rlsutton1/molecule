@@ -10,7 +10,7 @@ public class Atom implements Comparable<Atom>
 	Atom(String type, double x, double y, double z)
 	{
 		this.type = type;
-		position = new Vector3D(x, y, z);
+		this.position = new Vector3D(x, y, z);
 	}
 
 	@Override
@@ -19,8 +19,8 @@ public class Atom implements Comparable<Atom>
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
-				+ ((position == null) ? 0 : position.hashCode());
-		result = prime * result + ((type == null) ? 0 : type.hashCode());
+				+ ((this.position == null) ? 0 : this.position.hashCode());
+		result = prime * result + ((this.type == null) ? 0 : this.type.hashCode());
 		return result;
 	}
 
@@ -34,17 +34,19 @@ public class Atom implements Comparable<Atom>
 		if (getClass() != obj.getClass())
 			return false;
 		Atom other = (Atom) obj;
-		if (position == null)
+		if (this.position == null)
 		{
 			if (other.position != null)
 				return false;
-		} else if (!position.equals(other.position))
+		}
+		else if (!this.position.equals(other.position))
 			return false;
-		if (type == null)
+		if (this.type == null)
 		{
 			if (other.type != null)
 				return false;
-		} else if (!type.equals(other.type))
+		}
+		else if (!this.type.equals(other.type))
 			return false;
 		return true;
 	}
@@ -52,10 +54,10 @@ public class Atom implements Comparable<Atom>
 	@Override
 	public int compareTo(Atom o)
 	{
-		int c = o.type.compareTo(type);
+		int c = o.type.compareTo(this.type);
 		if (c == 0)
 		{
-			c = (int) (o.position.distance(position) * 1000.9);
+			c = (int) (o.position.distance(this.position) * 1000.9);
 		}
 
 		return c;
@@ -64,8 +66,8 @@ public class Atom implements Comparable<Atom>
 	@Override
 	public String toString()
 	{
-		return type + " " + position.getX() + " " + position.getY() + " "
-				+ position.getZ();
+		return this.type + " " + this.position.getX() + " " + this.position.getY() + " "
+				+ this.position.getZ();
 	}
 
 }

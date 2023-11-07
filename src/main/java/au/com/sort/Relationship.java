@@ -14,25 +14,25 @@ public class Relationship
 	public Relationship(Atom molecule)
 	{
 		this.molecule = molecule;
-		origin = molecule.position;
+		this.origin = molecule.position;
 	}
 
 	double similarity(Relationship o)
 	{
 		double ret = 0;
-		ret = origin.distance(o.origin);
+		ret = this.origin.distance(o.origin);
 
-		 ret += Math.abs(Vector3D.angle(origin, o.origin)) ;
+		ret += Math.abs(Vector3D.angle(this.origin, o.origin));
 		// ret += Math.abs(origin.getX()-o.origin.getX());
 
-		ret += Math.abs(origin.getX() - o.origin.getX());
-		ret += Math.abs(origin.getY() - o.origin.getY());
-		ret += Math.abs(origin.getZ() - o.origin.getZ());
+		ret += Math.abs(this.origin.getX() - o.origin.getX());
+		ret += Math.abs(this.origin.getY() - o.origin.getY());
+		ret += Math.abs(this.origin.getZ() - o.origin.getZ());
 
 		int n1 = 0;
-		for (Vector3D neighbour : neighbours)
+		for (Vector3D neighbour : this.neighbours)
 		{
-			n1 += origin.distance(neighbour);
+			n1 += this.origin.distance(neighbour);
 		}
 
 		int n2 = 0;
@@ -43,7 +43,7 @@ public class Relationship
 
 		ret += Math.abs(n1 - n2);
 
-		ret += Math.abs(neighbours.size() - o.neighbours.size());
+		ret += Math.abs(this.neighbours.size() - o.neighbours.size());
 
 		return ret;
 
@@ -51,7 +51,7 @@ public class Relationship
 
 	public void addNeighbour(Atom other)
 	{
-		neighbours.add(other.position);
+		this.neighbours.add(other.position);
 
 	}
 

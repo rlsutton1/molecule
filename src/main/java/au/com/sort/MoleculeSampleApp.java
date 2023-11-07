@@ -54,7 +54,7 @@ public class MoleculeSampleApp extends Application
 	private void buildScene(Group root)
 	{
 		System.out.println("buildScene");
-		root.getChildren().add(world);
+		root.getChildren().add(this.world);
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class MoleculeSampleApp extends Application
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
-		scene.setCamera(camera);
+		scene.setCamera(this.camera);
 
 		// root.getChildren().add(buildSubScene());
 		// root.getChildren().add(test());
@@ -173,18 +173,18 @@ public class MoleculeSampleApp extends Application
 
 	private void buildCamera(Group root)
 	{
-		root.getChildren().add(cameraXForm);
-		cameraXForm.getChildren().add(cameraXForm2);
-		cameraXForm2.getChildren().add(cameraXForm3);
-		cameraXForm3.getChildren().add(camera);
-		cameraXForm3.setRotateZ(180.0);
+		root.getChildren().add(this.cameraXForm);
+		this.cameraXForm.getChildren().add(this.cameraXForm2);
+		this.cameraXForm2.getChildren().add(this.cameraXForm3);
+		this.cameraXForm3.getChildren().add(this.camera);
+		this.cameraXForm3.setRotateZ(180.0);
 
-		camera.setFieldOfView(7);
-		camera.setNearClip(0.1);
-		camera.setFarClip(10000.0);
-		camera.setTranslateZ(-cameraDistance);
-		cameraXForm.ry.setAngle(180);
-		cameraXForm.rx.setAngle(180);
+		this.camera.setFieldOfView(7);
+		this.camera.setNearClip(0.1);
+		this.camera.setFarClip(10000.0);
+		this.camera.setTranslateZ(-this.cameraDistance);
+		this.cameraXForm.ry.setAngle(180);
+		this.cameraXForm.rx.setAngle(180);
 	}
 
 	// private void buildAxes()
@@ -217,17 +217,17 @@ public class MoleculeSampleApp extends Application
 	private void buildMolecule()
 	{
 
-		redMaterial = new PhongMaterial();
-		redMaterial.setDiffuseColor(Color.DARKRED);
-		redMaterial.setSpecularColor(Color.RED);
+		this.redMaterial = new PhongMaterial();
+		this.redMaterial.setDiffuseColor(Color.DARKRED);
+		this.redMaterial.setSpecularColor(Color.RED);
 
-		whiteMaterial = new PhongMaterial();
-		whiteMaterial.setDiffuseColor(Color.WHITE);
-		whiteMaterial.setSpecularColor(Color.LIGHTBLUE);
+		this.whiteMaterial = new PhongMaterial();
+		this.whiteMaterial.setDiffuseColor(Color.WHITE);
+		this.whiteMaterial.setSpecularColor(Color.LIGHTBLUE);
 
-		greyMaterial = new PhongMaterial();
-		greyMaterial.setDiffuseColor(Color.BLUE);
-		greyMaterial.setSpecularColor(Color.BLUE);
+		this.greyMaterial = new PhongMaterial();
+		this.greyMaterial.setDiffuseColor(Color.BLUE);
+		this.greyMaterial.setSpecularColor(Color.BLUE);
 
 		XForm moleculeXForm1 = new XForm();
 
@@ -238,13 +238,13 @@ public class MoleculeSampleApp extends Application
 			XForm atomXForm = new XForm();
 
 			Sphere atom = new Sphere(1.0);
-			atom.setMaterial(redMaterial);
+			atom.setMaterial(this.redMaterial);
 			atom.setTranslateX(m.position.getX());
 			atom.setTranslateY(m.position.getY());
 			atom.setTranslateZ(m.position.getZ());
 			atomXForm.getChildren().add(atom);
 
-			primaryAtoms.add(atom);
+			this.primaryAtoms.add(atom);
 			moleculeXForm1.getChildren().add(atomXForm);
 			addPrimaryMouseHandler(atom);
 		}
@@ -254,24 +254,24 @@ public class MoleculeSampleApp extends Application
 			XForm atomXForm = new XForm();
 
 			Sphere atom = new Sphere(1.0);
-			atom.setMaterial(redMaterial);
+			atom.setMaterial(this.redMaterial);
 			atom.setTranslateX(m.position.getX());
 			atom.setTranslateY(m.position.getY());
 			atom.setTranslateZ(m.position.getZ());
 			atomXForm.getChildren().add(atom);
 			moleculeXForm2.getChildren().add(atomXForm);
-			secondaryAtoms.add(atom);
+			this.secondaryAtoms.add(atom);
 			addSecondaryMouseHandler(atom);
 		}
 
-		moleculeGroupPrimary.setTranslateX(-SEPARATION);
-		moleculeGroupPrimary.getChildren().add(moleculeXForm1);
+		this.moleculeGroupPrimary.setTranslateX(-SEPARATION);
+		this.moleculeGroupPrimary.getChildren().add(moleculeXForm1);
 
-		moleculeGroupSecondary.getChildren().add(moleculeXForm2);
-		moleculeGroupSecondary.setTranslateX(SEPARATION);
+		this.moleculeGroupSecondary.getChildren().add(moleculeXForm2);
+		this.moleculeGroupSecondary.setTranslateX(SEPARATION);
 
-		world.getChildren().addAll(moleculeGroupPrimary);
-		world.getChildren().addAll(moleculeGroupSecondary);
+		this.world.getChildren().addAll(this.moleculeGroupPrimary);
+		this.world.getChildren().addAll(this.moleculeGroupSecondary);
 	}
 
 	private double mousePosX;
@@ -291,38 +291,40 @@ public class MoleculeSampleApp extends Application
 			public void handle(MouseEvent me)
 			{
 
-				if (lastSelected != null && me.isSecondaryButtonDown())
+				if (MoleculeSampleApp.this.lastSelected != null && me.isSecondaryButtonDown())
 				{
 					// here we can do a relationship swap!!!
 
-					for (int i = 0; i < secondaryAtoms.size(); i++)
+					for (int i = 0; i < MoleculeSampleApp.this.secondaryAtoms.size(); i++)
 					{
-						Sphere m = secondaryAtoms.get(i);
+						Sphere m = MoleculeSampleApp.this.secondaryAtoms.get(i);
 
 						if (m == node)
 						{
 
 							// clear the colors of the currently
 							// selected atoms
-							secondaryAtoms.get(lastSelected).setMaterial(
-									redMaterial);
-							secondaryAtoms.get(i).setMaterial(whiteMaterial);
+							MoleculeSampleApp.this.secondaryAtoms.get(MoleculeSampleApp.this.lastSelected).setMaterial(
+									MoleculeSampleApp.this.redMaterial);
+							MoleculeSampleApp.this.secondaryAtoms.get(i)
+									.setMaterial(MoleculeSampleApp.this.whiteMaterial);
 
 							// swap the secondary atoms around
-							Atom last = secondary.get(lastSelected);
+							Atom last = secondary.get(MoleculeSampleApp.this.lastSelected);
 							Atom other = secondary.get(i);
-							secondary.add(lastSelected, other);
-							secondary.remove(lastSelected + 1);
+							secondary.add(MoleculeSampleApp.this.lastSelected, other);
+							secondary.remove(MoleculeSampleApp.this.lastSelected + 1);
 							secondary.add(i, last);
 							secondary.remove(i + 1);
 
-							Sphere lastAtom = secondaryAtoms.get(lastSelected);
-							Sphere otherAtom = secondaryAtoms.get(i);
+							Sphere lastAtom = MoleculeSampleApp.this.secondaryAtoms
+									.get(MoleculeSampleApp.this.lastSelected);
+							Sphere otherAtom = MoleculeSampleApp.this.secondaryAtoms.get(i);
 
-							secondaryAtoms.add(lastSelected, otherAtom);
-							secondaryAtoms.remove(lastSelected + 1);
-							secondaryAtoms.add(i, lastAtom);
-							secondaryAtoms.remove(i + 1);
+							MoleculeSampleApp.this.secondaryAtoms.add(MoleculeSampleApp.this.lastSelected, otherAtom);
+							MoleculeSampleApp.this.secondaryAtoms.remove(MoleculeSampleApp.this.lastSelected + 1);
+							MoleculeSampleApp.this.secondaryAtoms.add(i, lastAtom);
+							MoleculeSampleApp.this.secondaryAtoms.remove(i + 1);
 
 							break;
 						}
@@ -342,36 +344,41 @@ public class MoleculeSampleApp extends Application
 			@Override
 			public void handle(MouseEvent me)
 			{
-				mousePosX = me.getSceneX();
-				mousePosY = me.getSceneY();
-				mouseOldX = me.getSceneX();
-				mouseOldY = me.getSceneY();
+				MoleculeSampleApp.this.mousePosX = me.getSceneX();
+				MoleculeSampleApp.this.mousePosY = me.getSceneY();
+				MoleculeSampleApp.this.mouseOldX = me.getSceneX();
+				MoleculeSampleApp.this.mouseOldY = me.getSceneY();
 
 				System.out.println(me.getX() + " " + me.getY() + "  "
 						+ me.getZ());
 
 				if (me.getClickCount() == 1)
 				{
-					if (lastSelected != null)
+					if (MoleculeSampleApp.this.lastSelected != null)
 					{
-						PhongMaterial material = greyMaterial;
-						if (selected.get(primary.get(lastSelected)) == null)
+						PhongMaterial material = MoleculeSampleApp.this.greyMaterial;
+						if (MoleculeSampleApp.this.selected
+								.get(primary.get(MoleculeSampleApp.this.lastSelected)) == null)
 						{
-							material = redMaterial;
+							material = MoleculeSampleApp.this.redMaterial;
 						}
-						primaryAtoms.get(lastSelected).setMaterial(material);
-						secondaryAtoms.get(lastSelected).setMaterial(material);
+						MoleculeSampleApp.this.primaryAtoms.get(MoleculeSampleApp.this.lastSelected)
+								.setMaterial(material);
+						MoleculeSampleApp.this.secondaryAtoms.get(MoleculeSampleApp.this.lastSelected)
+								.setMaterial(material);
 					}
 
 					for (int i = 0; i < primary.size(); i++)
 					{
-						Sphere m = primaryAtoms.get(i);
+						Sphere m = MoleculeSampleApp.this.primaryAtoms.get(i);
 						if (m == node)
 						{
-							primaryAtoms.get(i).setMaterial(whiteMaterial);
-							secondaryAtoms.get(i).setMaterial(whiteMaterial);
+							MoleculeSampleApp.this.primaryAtoms.get(i)
+									.setMaterial(MoleculeSampleApp.this.whiteMaterial);
+							MoleculeSampleApp.this.secondaryAtoms.get(i)
+									.setMaterial(MoleculeSampleApp.this.whiteMaterial);
 							System.out.println("Matched");
-							lastSelected = i;
+							MoleculeSampleApp.this.lastSelected = i;
 							break;
 						}
 					}
@@ -379,37 +386,42 @@ public class MoleculeSampleApp extends Application
 
 				if (me.getClickCount() == 2)
 				{
-					if (lastSelected != null
-							&& primary.get(lastSelected) != null)
+					if (MoleculeSampleApp.this.lastSelected != null
+							&& primary.get(MoleculeSampleApp.this.lastSelected) != null)
 					{
-						if (selected.get(primary.get(lastSelected)) == null)
+						if (MoleculeSampleApp.this.selected
+								.get(primary.get(MoleculeSampleApp.this.lastSelected)) == null)
 						{
-							selected.put(primary.get(lastSelected),
-									secondary.get(lastSelected));
+							MoleculeSampleApp.this.selected.put(primary.get(MoleculeSampleApp.this.lastSelected),
+									secondary.get(MoleculeSampleApp.this.lastSelected));
 							System.out.println("double");
-							primaryAtoms.get(lastSelected).setMaterial(
-									greyMaterial);
-							secondaryAtoms.get(lastSelected).setMaterial(
-									greyMaterial);
+							MoleculeSampleApp.this.primaryAtoms.get(MoleculeSampleApp.this.lastSelected).setMaterial(
+									MoleculeSampleApp.this.greyMaterial);
+							MoleculeSampleApp.this.secondaryAtoms.get(MoleculeSampleApp.this.lastSelected).setMaterial(
+									MoleculeSampleApp.this.greyMaterial);
 
-						} else
+						}
+						else
 						{
 							{
-								selected.remove(primary.get(lastSelected));
+								MoleculeSampleApp.this.selected
+										.remove(primary.get(MoleculeSampleApp.this.lastSelected));
 								System.out.println("double");
-								primaryAtoms.get(lastSelected).setMaterial(
-										redMaterial);
-								secondaryAtoms.get(lastSelected).setMaterial(
-										redMaterial);
+								MoleculeSampleApp.this.primaryAtoms.get(MoleculeSampleApp.this.lastSelected)
+										.setMaterial(
+												MoleculeSampleApp.this.redMaterial);
+								MoleculeSampleApp.this.secondaryAtoms.get(MoleculeSampleApp.this.lastSelected)
+										.setMaterial(
+												MoleculeSampleApp.this.redMaterial);
 
 							}
 						}
 					}
 				}
 
-				for (Atom t : selected.keySet())
+				for (Atom t : MoleculeSampleApp.this.selected.keySet())
 				{
-					System.out.println(t + " " + selected.get(t));
+					System.out.println(t + " " + MoleculeSampleApp.this.selected.get(t));
 				}
 
 			}
@@ -429,18 +441,19 @@ public class MoleculeSampleApp extends Application
 			{
 				if (!me.isStillSincePress())
 				{
-					mouseOldX = mousePosX;
-					mouseOldY = mousePosY;
-				} else
-				{
-					mouseOldX = me.getSceneX();
-					mouseOldY = me.getSceneY();
+					MoleculeSampleApp.this.mouseOldX = MoleculeSampleApp.this.mousePosX;
+					MoleculeSampleApp.this.mouseOldY = MoleculeSampleApp.this.mousePosY;
 				}
-				mousePosX = me.getSceneX();
-				mousePosY = me.getSceneY();
+				else
+				{
+					MoleculeSampleApp.this.mouseOldX = me.getSceneX();
+					MoleculeSampleApp.this.mouseOldY = me.getSceneY();
+				}
+				MoleculeSampleApp.this.mousePosX = me.getSceneX();
+				MoleculeSampleApp.this.mousePosY = me.getSceneY();
 
-				mouseDeltaX = (mousePosX - mouseOldX);
-				mouseDeltaY = (mousePosY - mouseOldY);
+				this.mouseDeltaX = (MoleculeSampleApp.this.mousePosX - MoleculeSampleApp.this.mouseOldX);
+				this.mouseDeltaY = (MoleculeSampleApp.this.mousePosY - MoleculeSampleApp.this.mouseOldY);
 
 				double modifier = 1.0;
 				double modifierFactor = 0.1;
@@ -455,37 +468,43 @@ public class MoleculeSampleApp extends Application
 				}
 				if (me.isPrimaryButtonDown())
 				{
-					moleculeGroupPrimary.ry.setAngle(moleculeGroupPrimary.ry
-							.getAngle()
-							- mouseDeltaX
-							* modifierFactor
-							* modifier * 2.0); // +
-					moleculeGroupPrimary.rx.setAngle(moleculeGroupPrimary.rx
-							.getAngle()
-							+ mouseDeltaY
-							* modifierFactor
-							* modifier * 2.0); // -
+					MoleculeSampleApp.this.moleculeGroupPrimary.ry
+							.setAngle(MoleculeSampleApp.this.moleculeGroupPrimary.ry
+									.getAngle()
+									- this.mouseDeltaX
+											* modifierFactor
+											* modifier * 2.0); // +
+					MoleculeSampleApp.this.moleculeGroupPrimary.rx
+							.setAngle(MoleculeSampleApp.this.moleculeGroupPrimary.rx
+									.getAngle()
+									+ this.mouseDeltaY
+											* modifierFactor
+											* modifier * 2.0); // -
 
-					moleculeGroupSecondary.ry
-							.setAngle(moleculeGroupSecondary.ry.getAngle()
-									- mouseDeltaX * modifierFactor * modifier
-									* 2.0); // +
-					moleculeGroupSecondary.rx
-							.setAngle(moleculeGroupSecondary.rx.getAngle()
-									+ mouseDeltaY * modifierFactor * modifier
-									* 2.0); // -
+					MoleculeSampleApp.this.moleculeGroupSecondary.ry
+							.setAngle(MoleculeSampleApp.this.moleculeGroupSecondary.ry.getAngle()
+									- this.mouseDeltaX * modifierFactor * modifier
+											* 2.0); // +
+					MoleculeSampleApp.this.moleculeGroupSecondary.rx
+							.setAngle(MoleculeSampleApp.this.moleculeGroupSecondary.rx.getAngle()
+									+ this.mouseDeltaY * modifierFactor * modifier
+											* 2.0); // -
 
-				} else if (me.isSecondaryButtonDown())
+				}
+				else if (me.isSecondaryButtonDown())
 				{
-					double z = camera.getTranslateZ();
-					double newZ = z + mouseDeltaX * modifierFactor * modifier;
-					camera.setTranslateZ(newZ);
-				} else if (me.isMiddleButtonDown())
+					double z = MoleculeSampleApp.this.camera.getTranslateZ();
+					double newZ = z + this.mouseDeltaX * modifierFactor * modifier;
+					MoleculeSampleApp.this.camera.setTranslateZ(newZ);
+				}
+				else if (me.isMiddleButtonDown())
 				{
-					cameraXForm2.t.setX(cameraXForm2.t.getX() + mouseDeltaX
-							* modifierFactor * modifier * 0.3); // -
-					cameraXForm2.t.setY(cameraXForm2.t.getY() + mouseDeltaY
-							* modifierFactor * modifier * 0.3); // -
+					MoleculeSampleApp.this.cameraXForm2.t
+							.setX(MoleculeSampleApp.this.cameraXForm2.t.getX() + this.mouseDeltaX
+									* modifierFactor * modifier * 0.3); // -
+					MoleculeSampleApp.this.cameraXForm2.t
+							.setY(MoleculeSampleApp.this.cameraXForm2.t.getY() + this.mouseDeltaY
+									* modifierFactor * modifier * 0.3); // -
 				}
 			}
 		});

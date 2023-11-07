@@ -15,20 +15,19 @@ public class FileLoader
 	FileLoader(String primaryFileName, String secondaryFileName, String type,
 			String excludeFileName) throws FileNotFoundException, IOException
 	{
-		primary = parseFile(primaryFileName, type, 1);
+		this.primary = parseFile(primaryFileName, type, 1);
 
-		secondary = parseFile(secondaryFileName, type, 1);
-
+		this.secondary = parseFile(secondaryFileName, type, 1);
 
 		if (excludeFileName != null)
 		{
 			List<Atom> collapsedStripList = parseFile(excludeFileName, type, 1);
 			List<Atom> openStripList = parseFile(excludeFileName, type, 3);
 
-			primary = stripAtoms(primary, collapsedStripList);
-			secondary = stripAtoms(secondary, openStripList);
+			this.primary = stripAtoms(this.primary, collapsedStripList);
+			this.secondary = stripAtoms(this.secondary, openStripList);
 
-			if (primary.size() != secondary.size())
+			if (this.primary.size() != this.secondary.size())
 			{
 				throw new RuntimeException(
 						"stripping resulted in incorrect list sizes");
@@ -39,18 +38,18 @@ public class FileLoader
 
 	public List<Atom> getPrimary()
 	{
-		return primary;
+		return this.primary;
 	}
 
 	public List<Atom> getSecondary()
 	{
-		return secondary;
+		return this.secondary;
 	}
 
 	List<Atom> stripAtoms(List<Atom> target, List<Atom> stripList)
 	{
 		double tollerance = 0.0001;
-		List<Atom> result = new LinkedList<Atom>();
+		List<Atom> result = new LinkedList<>();
 
 		for (Atom t : target)
 		{
@@ -78,7 +77,7 @@ public class FileLoader
 			int requiredBlock) throws FileNotFoundException, IOException
 	{
 
-		List<Atom> primary = new LinkedList<>();
+		List<Atom> atoms = new LinkedList<>();
 		try (BufferedReader reader = new BufferedReader(
 				new FileReader(filename)))
 		{
@@ -103,13 +102,13 @@ public class FileLoader
 				if (block == requiredBlock)
 				{
 
-					Atom molecule = parseLine(line);
-					if (molecule != null)
+					Atom atom = parseLine(line);
+					if (atom != null)
 					{
 						if (atomFilter == null
-								|| applyAtomFilter(atomFilter, molecule))
+								|| applyAtomFilter(atomFilter, atom))
 						{
-							primary.add(molecule);
+							atoms.add(atom);
 						}
 					}
 					else
@@ -119,7 +118,7 @@ public class FileLoader
 				}
 			}
 		}
-		return primary;
+		return atoms;
 	}
 
 	private static boolean applyAtomFilter(String atomFilter, Atom molecule)

@@ -36,10 +36,9 @@ public class Sorter
 	double bestDisturbance = 1000000000;
 
 	void start(List<Atom> primary, List<Atom> secondary)
-			throws InterruptedException
 	{
 
-		double lastBest = bestDisturbance;
+		double lastBest = this.bestDisturbance;
 		for (int i = 0; i < 10000000; i++)
 		{
 			List<Atom> removable = new LinkedList<>();
@@ -48,9 +47,9 @@ public class Sorter
 			primaryremovable2.addAll(primary);
 			attempt(primaryremovable2, removable);
 
-			if (lastBest > bestDisturbance)
+			if (lastBest > this.bestDisturbance)
 			{
-				lastBest = bestDisturbance;
+				lastBest = this.bestDisturbance;
 
 				// Thread.sleep(1000);
 				System.out.println();
@@ -60,27 +59,27 @@ public class Sorter
 				{
 					System.out.println(molecule);
 				}
-				if (bestResult != null)
+				if (this.bestResult != null)
 				{
-					System.out.println(bestResult.size());
-					for (Atom molecule : bestResult)
+					System.out.println(this.bestResult.size());
+					for (Atom molecule : this.bestResult)
 					{
 						System.out.println(molecule);
 					}
 
-					System.out.println(bestResult.size());
+					System.out.println(this.bestResult.size());
 
-					for (int j = 0; j < bestResult.size(); j++)
+					for (int j = 0; j < this.bestResult.size(); j++)
 					{
 						System.out.println(primary.get(j)
 								+ " "
-								+ bestResult.get(j)
+								+ this.bestResult.get(j)
 								+ " distance "
-								+ primary.get(j).position.distance(bestResult
+								+ primary.get(j).position.distance(this.bestResult
 										.get(j).position));
 					}
 				}
-				System.out.println("Best " + bestDisturbance);
+				System.out.println("Best " + this.bestDisturbance);
 			}
 		}
 
@@ -122,7 +121,8 @@ public class Sorter
 					{
 						bestMatch = molecule;
 						bestMatchDistance = distance;
-					} else
+					}
+					else
 					{
 
 						if (distance < bestMatchDistance
@@ -149,15 +149,15 @@ public class Sorter
 
 		}
 
-		if (totalDisturbance < bestDisturbance || bestResult == null)
+		if (totalDisturbance < this.bestDisturbance || this.bestResult == null)
 		{
-			bestDisturbance = totalDisturbance;
+			this.bestDisturbance = totalDisturbance;
 			List<Atom> tmp = new LinkedList<>();
 			for (Atom m : tertiary)
 			{
 				tmp.add(m);
 			}
-			bestResult = tmp;
+			this.bestResult = tmp;
 		}
 
 	}

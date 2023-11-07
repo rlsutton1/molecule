@@ -11,15 +11,12 @@ public class RelationshipSorter
 			InterruptedException
 	{
 
-		
-
 		FileLoader loader = new FileLoader(args[0], args[1], args[2], args[3]);
 		List<Atom> primary = loader.getPrimary();
 
 		List<Atom> secondary = loader.getSecondary();
 
-		
-		getSorted( primary, secondary);
+		getSorted(primary, secondary);
 	}
 
 	public static List<Atom> getSorted(
@@ -48,13 +45,17 @@ public class RelationshipSorter
 			{
 				double similarity = pr.similarity(sr);
 				if (similarity < bestMatch &&
-						 pr.origin.distance(sr.origin) > 0.7)
+						pr.origin.distance(sr.origin) > 0.7)
 				{
 					bestMatch = similarity;
 					bestRelationship = sr;
 
 				}
 
+			}
+			if (bestRelationship == null)
+			{
+				return results;
 			}
 			results.add(bestRelationship.molecule);
 			secondaryRelationships.remove(bestRelationship);
@@ -101,7 +102,5 @@ public class RelationshipSorter
 		return relationships;
 
 	}
-	
-	
 
 }
