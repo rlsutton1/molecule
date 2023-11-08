@@ -13,7 +13,7 @@ public class Starter
 {
 	public static void main(final String[] args) throws FileNotFoundException, IOException, InterruptedException
 	{
-		MoleculeSampleApp.main(args);
+		MoleculeInspectorApp.main(args);
 	}
 
 }

@@ -1,17 +1,20 @@
 package au.com.sort;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import au.com.sort.fileloader.FileLoader;
+import au.com.sort.fileloader.FileLoaderFactory;
+
 public class RelationshipSorter
 {
 
-	public static void main(String[] args) throws IOException,
-			InterruptedException
+	public static void main(String[] args) throws InterruptedException, FileNotFoundException, IOException
 	{
 
-		FileLoader loader = new FileLoader(args[0], args[1], args[2], args[3]);
+		FileLoader loader = FileLoaderFactory.getFileLoader(args[0], args[1], args[2], args[3]);
 		List<Atom> primary = loader.getPrimary();
 
 		List<Atom> secondary = loader.getSecondary();

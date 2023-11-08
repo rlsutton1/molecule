@@ -4,10 +4,10 @@ import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
 public class Atom implements Comparable<Atom>
 {
-	String type;
-	Vector3D position;
+	public String type;
+	public Vector3D position;
 
-	Atom(String type, double x, double y, double z)
+	public Atom(String type, double x, double y, double z)
 	{
 		this.type = type;
 		this.position = new Vector3D(x, y, z);
@@ -66,7 +66,7 @@ public class Atom implements Comparable<Atom>
 	@Override
 	public String toString()
 	{
-		return this.type + " " + this.position.getX() + " " + this.position.getY() + " "
+		return this.type + "X " + this.position.getX() + " " + this.position.getY() + " "
 				+ this.position.getZ();
 	}
 

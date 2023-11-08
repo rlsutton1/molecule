@@ -1,4 +1,4 @@
-package au.com.sort;
+package au.com.sort.fileloader;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -7,12 +7,14 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class FileLoader
+import au.com.sort.Atom;
+
+public class FileLoaderXYZ implements FileLoader
 {
 	private List<Atom> primary;
 	private List<Atom> secondary;
 
-	FileLoader(String primaryFileName, String secondaryFileName, String type,
+	public FileLoaderXYZ(String primaryFileName, String secondaryFileName, String type,
 			String excludeFileName) throws FileNotFoundException, IOException
 	{
 		this.primary = parseFile(primaryFileName, type, 1);
@@ -36,11 +38,13 @@ public class FileLoader
 
 	}
 
+	@Override
 	public List<Atom> getPrimary()
 	{
 		return this.primary;
 	}
 
+	@Override
 	public List<Atom> getSecondary()
 	{
 		return this.secondary;
@@ -73,7 +77,7 @@ public class FileLoader
 		return result;
 	}
 
-	private static List<Atom> parseFile(String filename, String atomFilter,
+	private List<Atom> parseFile(String filename, String atomFilter,
 			int requiredBlock) throws FileNotFoundException, IOException
 	{
 
@@ -121,7 +125,7 @@ public class FileLoader
 		return atoms;
 	}
 
-	private static boolean applyAtomFilter(String atomFilter, Atom molecule)
+	private boolean applyAtomFilter(String atomFilter, Atom molecule)
 	{
 		String[] filters = atomFilter.split(",");
 		boolean matches = false;
@@ -137,7 +141,7 @@ public class FileLoader
 		return matches;
 	}
 
-	static Atom parseLine(String line)
+	Atom parseLine(String line)
 	{
 
 		String temp = line.replace("\t", " ");
