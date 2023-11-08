@@ -1,5 +1,6 @@
 # molecule
 
+you will need Java 17 and maven installed
 
 # build
 mvn clean compile assembly:single
