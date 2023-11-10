@@ -2,6 +2,7 @@ package au.com.sort;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,9 +49,6 @@ public class MoleculeInspectorApp extends Application
 
 	List<Sphere> primaryAtoms = new LinkedList<>();
 
-	private PhongMaterial redMaterial;
-	private PhongMaterial greyMaterial;
-
 	private void buildScene(Group root)
 	{
 		System.out.println("buildScene");
@@ -61,6 +59,8 @@ public class MoleculeInspectorApp extends Application
 	public void start(Stage primaryStage)
 	{
 		System.out.println("start");
+
+		initColours();
 		final Group root = new Group();
 		buildScene(root);
 
@@ -213,20 +213,39 @@ public class MoleculeInspectorApp extends Application
 	// world.getChildren().addAll(axisGroup);
 	// }
 
+	Map<String, PhongMaterial> atomToColourMap = new HashMap<>();
+	List<PhongMaterial> availableColours = new LinkedList<>();
+
+	void initColours()
+	{
+		this.atomToColourMap.put("N", new PhongMaterial(Color.BLUE));
+		this.atomToColourMap.put("C", new PhongMaterial(Color.BLACK));
+		this.atomToColourMap.put("O", new PhongMaterial(Color.RED));
+		this.atomToColourMap.put("H", new PhongMaterial(Color.PINK));
+		this.atomToColourMap.put("Al", new PhongMaterial(Color.GREY));
+
+		availableColours.add(new PhongMaterial(Color.GREEN));
+		availableColours.add(new PhongMaterial(Color.PURPLE));
+		availableColours.add(new PhongMaterial(Color.YELLOW));
+		availableColours.add(new PhongMaterial(Color.YELLOWGREEN));
+		availableColours.add(new PhongMaterial(Color.BROWN));
+		availableColours.add(new PhongMaterial(Color.ORANGE));
+	}
+
+	PhongMaterial getColor(String atom)
+	{
+		PhongMaterial color = this.atomToColourMap.get(atom);
+		if (color == null)
+		{
+			color = this.availableColours.remove(0);
+			this.atomToColourMap.put(atom, color);
+			System.out.println("Adding colour for " + atom);
+		}
+		return color;
+	}
+
 	private void buildMolecule()
 	{
-
-		this.redMaterial = new PhongMaterial();
-		this.redMaterial.setDiffuseColor(Color.DARKRED);
-		this.redMaterial.setSpecularColor(Color.RED);
-
-		this.whiteMaterial = new PhongMaterial();
-		this.whiteMaterial.setDiffuseColor(Color.WHITE);
-		this.whiteMaterial.setSpecularColor(Color.LIGHTBLUE);
-
-		this.greyMaterial = new PhongMaterial();
-		this.greyMaterial.setDiffuseColor(Color.BLUE);
-		this.greyMaterial.setSpecularColor(Color.BLUE);
 
 		XForm moleculeXForm1 = new XForm();
 
@@ -251,7 +270,7 @@ public class MoleculeInspectorApp extends Application
 			XForm atomXForm = new XForm();
 
 			Sphere sphere = new Sphere(1.0);
-			sphere.setMaterial(this.redMaterial);
+			sphere.setMaterial(getColor(atom.type));
 			sphere.setTranslateX(atom.position.getX() * scalar);
 			sphere.setTranslateY(atom.position.getY() * scalar);
 			sphere.setTranslateZ(atom.position.getZ() * scalar);
@@ -295,11 +314,11 @@ public class MoleculeInspectorApp extends Application
 				{
 					if (MoleculeInspectorApp.this.lastSelected != null)
 					{
-						PhongMaterial material = MoleculeInspectorApp.this.greyMaterial;
+						PhongMaterial material = MoleculeInspectorApp.this.whiteMaterial;
 						if (MoleculeInspectorApp.this.selected
 								.get(primary.get(MoleculeInspectorApp.this.lastSelected)) == null)
 						{
-							material = MoleculeInspectorApp.this.redMaterial;
+							material = getColor(atom.type);
 						}
 						MoleculeInspectorApp.this.primaryAtoms.get(MoleculeInspectorApp.this.lastSelected)
 								.setMaterial(material);
