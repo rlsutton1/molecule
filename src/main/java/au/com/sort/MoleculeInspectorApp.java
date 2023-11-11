@@ -224,12 +224,12 @@ public class MoleculeInspectorApp extends Application
 		this.atomToColourMap.put("H", new PhongMaterial(Color.PINK));
 		this.atomToColourMap.put("Al", new PhongMaterial(Color.GREY));
 
-		availableColours.add(new PhongMaterial(Color.GREEN));
-		availableColours.add(new PhongMaterial(Color.PURPLE));
-		availableColours.add(new PhongMaterial(Color.YELLOW));
-		availableColours.add(new PhongMaterial(Color.YELLOWGREEN));
-		availableColours.add(new PhongMaterial(Color.BROWN));
-		availableColours.add(new PhongMaterial(Color.ORANGE));
+		this.availableColours.add(new PhongMaterial(Color.GREEN));
+		this.availableColours.add(new PhongMaterial(Color.PURPLE));
+		this.availableColours.add(new PhongMaterial(Color.YELLOW));
+		this.availableColours.add(new PhongMaterial(Color.YELLOWGREEN));
+		this.availableColours.add(new PhongMaterial(Color.BROWN));
+		this.availableColours.add(new PhongMaterial(Color.ORANGE));
 	}
 
 	PhongMaterial getColor(String atom)

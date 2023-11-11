@@ -57,7 +57,7 @@ public class FileLoaderIN implements FileLoader
 					foundAtomicPositions = true;
 					continue;
 				}
-				if (foundAtomicPositions)
+				if (foundAtomicPositions && line.length() > 0)
 				{
 					Atom atom = parseLine(line);
 					if (atom != null)
