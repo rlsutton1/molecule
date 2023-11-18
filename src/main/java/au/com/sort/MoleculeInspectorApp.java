@@ -275,6 +275,16 @@ public class MoleculeInspectorApp extends Application
 			sphere.setTranslateY(atom.position.getY() * scalar);
 			sphere.setTranslateZ(atom.position.getZ() * scalar);
 			atomXForm.getChildren().add(sphere);
+			if (atom.label != null && atom.label.contains("axis"))
+			{
+				//				sphere.setMaterial(new PhongMaterial(Color.ORANGE));
+				//				Label label = new Label(atom.label);
+				//				label.setTranslateX((atom.position.getX()) * scalar);
+				//				label.setTranslateY(atom.position.getY() * scalar);
+				//				label.setTranslateZ(atom.position.getZ() * scalar);
+				//
+				//				atomXForm.getChildren().add(label);
+			}
 
 			this.primaryAtoms.add(sphere);
 			moleculeXForm1.getChildren().add(atomXForm);

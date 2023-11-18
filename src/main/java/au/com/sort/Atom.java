@@ -6,6 +6,7 @@ public class Atom implements Comparable<Atom>
 {
 	public String type;
 	public Vector3D position;
+	public String label;
 
 	public Atom(String type, double x, double y, double z)
 	{

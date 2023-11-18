@@ -126,7 +126,12 @@ public class FileLoaderIN implements FileLoader
 			return null;
 		}
 
-		return new Atom(m, x, y, z);
+		Atom atom = new Atom(m, x, y, z);
+		if (parts.length == 5)
+		{
+			atom.label = parts[4];
+		}
+		return atom;
 
 	}
 
