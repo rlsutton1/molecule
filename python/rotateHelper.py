@@ -64,9 +64,34 @@ def apply_translation_matrix(vectors, translation_matrix):
     return     result 
 
 
+def apply_cell_parameters(vector, cellParameters):
+    # apply cell parameters to all vectors
+    
+    vector[0] = vector[0] * cellParameters.x[0]
+    vector[1] = vector[1] * cellParameters.y[1]
+    vector[2] = vector[2] * cellParameters.z[2]
+    
+def revert_cell_parameters(vector, cellParameters):
+    # apply cell parameters to all vectors
+    
+    vector[0] = vector[0] / cellParameters.x[0]
+    vector[1] = vector[1] / cellParameters.y[1]
+    vector[2] = vector[2] / cellParameters.z[2]
+    
+    vector[0] = vector[0] % 1
+    vector[1] = vector[1] % 1
+    vector[2] = vector[2] % 1
+    
+    while (vector[0] < 0):
+        vector[0] = vector[0] + 1
+    while (vector[1] < 0):
+        vector[1] = vector[1] + 1
+    while (vector[2] < 0):
+        vector[2] = vector[2] + 1
+    
+    return vector
 
-
-
+ 
 #rootAtom  = [1,1,1]
 #endAtom   = [1,1,2]
 # copy rootAtom to originalMatrix

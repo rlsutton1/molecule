@@ -28,10 +28,12 @@ mapIndexToAtom = {}
 
 for (item) in result.atoms:
     if item.flags == '*g1-axis-start':
+        r.apply_cell_parameters(item.position,result.cellParameters)
         rootAtom = item.position
         mapIndexToAtom[atomCounter] =item
         atomCounter = atomCounter + 1
     if item.flags == '*g1-axis-end':
+        r.apply_cell_parameters(item.position,result.cellParameters)
         endAtom = item.position
         mapIndexToAtom[atomCounter] =item
         atomCounter = atomCounter + 1
@@ -47,6 +49,7 @@ atoms.append(endAtom)
 
 for (item) in result.atoms:
     if item.flags == '*g1':
+        r.apply_cell_parameters(item.position,result.cellParameters)
         atoms.append(item.position)
         mapIndexToAtom[atomCounter] =item
         atomCounter = atomCounter + 1
@@ -81,9 +84,10 @@ backAtOrigin = r.apply_translation_matrix(rotatedBack, orginalRoot)
 
 i=0 
 for (atom) in backAtOrigin:
-    mapIndexToAtom[i].position[0] = atom[0]
-    mapIndexToAtom[i].position[1] = atom[1]
-    mapIndexToAtom[i].position[2] = atom[2]
+    temp =r.revert_cell_parameters(atom,result.cellParameters)
+    mapIndexToAtom[i].position[0] = temp[0]
+    mapIndexToAtom[i].position[1] = temp[1]
+    mapIndexToAtom[i].position[2] = temp[2]
     i = i + 1
 
 
