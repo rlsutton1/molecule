@@ -305,7 +305,8 @@ public class MoleculeInspectorApp extends Application
 	private double mousePosY;
 	private double mouseOldX;
 	private double mouseOldY;
-	protected Integer lastSelected = null;
+	protected Sphere lastSelectedSphere = null;
+	protected Atom lastSelectedAtom = null;
 
 	Map<Atom, Atom> selected = new LinkedHashMap<>();
 
@@ -326,28 +327,31 @@ public class MoleculeInspectorApp extends Application
 
 				if (me.getClickCount() == 1)
 				{
-					if (MoleculeInspectorApp.this.lastSelected != null)
+
+					if (MoleculeInspectorApp.this.lastSelectedSphere != null)
+					{
+						String label = MoleculeInspectorApp.this.lastSelectedAtom.label;
+						PhongMaterial material = getColor(MoleculeInspectorApp.this.lastSelectedAtom.type);
+
+						if (label != null && !label.isEmpty())
+						{
+							String group = label.split("-")[0];
+							material = getColor(group);
+
+						}
+						MoleculeInspectorApp.this.lastSelectedSphere.setMaterial(material);
+					}
+					if (lastSelectedAtom != atom)
 					{
 						PhongMaterial material = MoleculeInspectorApp.this.whiteMaterial;
-						if (MoleculeInspectorApp.this.selected
-								.get(primary.get(MoleculeInspectorApp.this.lastSelected)) == null)
-						{
-							material = getColor(atom.type);
-						}
-						MoleculeInspectorApp.this.primaryAtoms.get(MoleculeInspectorApp.this.lastSelected)
-								.setMaterial(material);
+						node.setMaterial(material);
+						MoleculeInspectorApp.this.lastSelectedAtom = atom;
+						MoleculeInspectorApp.this.lastSelectedSphere = node;
 					}
-
-					for (int i = 0; i < primary.size(); i++)
+					else
 					{
-						Sphere m = MoleculeInspectorApp.this.primaryAtoms.get(i);
-						if (m == node)
-						{
-							MoleculeInspectorApp.this.primaryAtoms.get(i)
-									.setMaterial(MoleculeInspectorApp.this.whiteMaterial);
-							MoleculeInspectorApp.this.lastSelected = i;
-							break;
-						}
+						MoleculeInspectorApp.this.lastSelectedAtom = null;
+						MoleculeInspectorApp.this.lastSelectedSphere = null;
 					}
 				}
 
