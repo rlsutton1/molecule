@@ -230,6 +230,8 @@ public class MoleculeInspectorApp extends Application
 		this.availableColours.add(new PhongMaterial(Color.YELLOWGREEN));
 		this.availableColours.add(new PhongMaterial(Color.BROWN));
 		this.availableColours.add(new PhongMaterial(Color.ORANGE));
+		this.availableColours.add(new PhongMaterial(Color.AQUAMARINE));
+		this.availableColours.add(new PhongMaterial(Color.AZURE));
 	}
 
 	PhongMaterial getColor(String atom)
@@ -275,9 +277,11 @@ public class MoleculeInspectorApp extends Application
 			sphere.setTranslateY(atom.position.getY() * scalar);
 			sphere.setTranslateZ(atom.position.getZ() * scalar);
 			atomXForm.getChildren().add(sphere);
-			if (atom.label != null && atom.label.contains("axis"))
+			if (atom.label != null && !atom.label.isEmpty())
 			{
-				//				sphere.setMaterial(new PhongMaterial(Color.ORANGE));
+				String group = atom.label.split("-")[0];
+				PhongMaterial color = getColor(group);
+				sphere.setMaterial(color);
 				//				Label label = new Label(atom.label);
 				//				label.setTranslateX((atom.position.getX()) * scalar);
 				//				label.setTranslateY(atom.position.getY() * scalar);
