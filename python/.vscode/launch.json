@@ -8,7 +8,9 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "args": [
-                "input_labelled.in"
+                "input_labelled.in",
+                "*g1",
+                "45"
             ]
         }
     ]

@@ -48,6 +48,9 @@ class INReader:
         
         with open(filename, 'r') as f:
             for line in f:
+                #remove carage return from line
+                line = line.rstrip();
+                
                 if (line.startswith('ATOMIC_POSITIONS')): 
                     foundAtomicPositions = True
                 if (line.startswith('K_POINTS')):

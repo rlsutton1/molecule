@@ -5,14 +5,19 @@ import inreader as inReader
 import pdbreader as pdbReader
 import rotateHelper as r
 
+# example usage
+#   python3 structureRotate.py input_labelled.in *g1 13 > ../rotated.in 
+
 # get file name from command line argument
 filename = sys.argv[1]
+group = sys.argv[2]
+angle = sys.argv[3]
+#convert angle from a string to a number
+desiredRotate = float(angle)
 
 if (filename.endswith('.in')):
-    print('in file')
     result = inReader.INReader(filename)
 if (filename.endswith('.pdb')):
-    print('pdb file')
     result = pdbReader.PDBReader(filename)
     
 if (result == None):
@@ -27,19 +32,19 @@ atomCounter = 0;
 mapIndexToAtom = {}
 
 for (item) in result.atoms:
-    if item.flags == '*g1-axis-start':
+    if item.flags == group+'-axis-start':
         r.apply_cell_parameters(item.position,result.cellParameters)
         rootAtom = item.position
         mapIndexToAtom[atomCounter] =item
         atomCounter = atomCounter + 1
-    if item.flags == '*g1-axis-end':
+    if item.flags == group+'-axis-end':
         r.apply_cell_parameters(item.position,result.cellParameters)
         endAtom = item.position
         mapIndexToAtom[atomCounter] =item
         atomCounter = atomCounter + 1
 
 if (rootAtom == 0 or endAtom == 0):
-    print('could not find any flagged atoms, add some flags to the input file. eg *g1-axis and *g1')
+    print('could not find any flagged atoms, add some flags to the input file. eg '+group+'-axis and '+group)
     sys.exit(1)
 
 
@@ -48,7 +53,7 @@ atoms.append(rootAtom)
 atoms.append(endAtom)
 
 for (item) in result.atoms:
-    if item.flags == '*g1':
+    if item.flags == group:
         r.apply_cell_parameters(item.position,result.cellParameters)
         atoms.append(item.position)
         mapIndexToAtom[atomCounter] =item
@@ -73,8 +78,6 @@ inverseAxisRotationMatrix = axisRotationMatrix.inv()
 
 
 alignedWithAxis = r.rotate_vectors(atOrgin,inverseAxisRotationMatrix)
-
-desiredRotate = 45
 
 rotated = r.rotate_vectors(alignedWithAxis, r.get_rotation_from_angles(0,0,desiredRotate))
 
