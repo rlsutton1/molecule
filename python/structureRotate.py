@@ -61,7 +61,10 @@ for (item) in result.atoms:
     if item.flags == group+'r':
         r.apply_cell_parameters(item.position,result.cellParameters)
         # flip the y axis outside of the unit cell for the rotation on this atom
-        item.position[1] = item.position[1] * -1
+        if (item.position[1] > 0.5):
+            item.position[1] = item.position[1] * -1
+        else:
+            item.position[1] = item.position[1] * +1
         atoms.append(item.position)
         mapIndexToAtom[atomCounter] =item
         atomCounter = atomCounter + 1
